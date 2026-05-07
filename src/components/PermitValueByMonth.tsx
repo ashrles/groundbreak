@@ -17,14 +17,14 @@ const MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 export function PermitValueByMonth({ data }: Props) {
-  const chartData = Object.entries(
-    data.reduce<Record<string, number>>((acc, d) => {
-      if (!d.year || !d.month) return acc;
-      const key = `${d.year}-${String(d.month).padStart(2, "0")}`;
-      acc[key] = (acc[key] || 0) + (d.value || 0);
-      return acc;
-    }, {})
-  )
+    const chartData = Object.entries(
+        data.reduce<Record<string, number>>((acc, d) => {
+        if (!d.year || !d.month) return acc;
+        const key = `${d.year}-${String(d.month).padStart(2, "0")}`;
+        acc[key] = (acc[key] || 0) + (d.value || 0);
+        return acc;
+        }, {})
+    )
     .map(([key, total]) => {
       const [year, month] = key.split("-");
       return {

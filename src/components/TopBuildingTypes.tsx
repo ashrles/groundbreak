@@ -14,12 +14,12 @@ interface Props {
 }
 
 export function TopBuildingTypes({ data }: Props) {
-  const chartData = Object.entries(
-    data.reduce<Record<string, number>>((acc, d) => {
-      if (d.blg_type) acc[d.blg_type] = (acc[d.blg_type] || 0) + 1;
-      return acc;
-    }, {})
-  )
+    const chartData = Object.entries(
+        data.reduce<Record<string, number>>((acc, d) => {
+        if (d.blg_type) acc[d.blg_type] = (acc[d.blg_type] || 0) + 1;
+        return acc;
+        }, {})
+    )
     .map(([type, count]) => ({ type, count }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 8);

@@ -11,17 +11,22 @@ import type { Permit } from "../hooks/usePermitData";
 
 interface Props {
   data: Permit[];
+  onYearClick: (year: number) => void;
 }
 
-export function PermitsByYear({ data }: Props) {
-  const chartData = Object.entries(
-    data.reduce<Record<number, number>>((acc, d) => {
-      if (d.year) acc[d.year] = (acc[d.year] || 0) + 1;
-      return acc;
-    }, {})
-  )
+export function PermitsByYear({ data, onYearClick }: Props) {
+    const chartData = Object.entries(
+        data.reduce<Record<number, number>>((acc, d) => {
+        if (d.year) acc[d.year] = (acc[d.year] || 0) + 1;
+        return acc;
+        }, {})
+    )
     .map(([year, count]) => ({ year: Number(year), count }))
     .sort((a, b) => a.year - b.year);
+
+    const handleClick = (barData: any) => {
+        if (barData?.year) onYearClick(barData.year as number);
+    };
 
   return (
     <div style={{
@@ -57,7 +62,7 @@ export function PermitsByYear({ data }: Props) {
                 "Permits",
             ] as any}
           />
-          <Bar dataKey="count" fill="#f0c040" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="count" fill="#f0c040" radius={[4, 4, 0, 0]} onClick={handleClick} style={{ cursor: "pointer" }} />
         </BarChart>
       </ResponsiveContainer>
     </div>

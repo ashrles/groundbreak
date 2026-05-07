@@ -71,7 +71,7 @@ function App() {
 
       {/* Charts */}
       <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-        <PermitsByYear data={filtered} />
+        <PermitsByYear data={filtered} onYearClick={(year) => setSelectedYear(year)} />
         <PermitValueByMonth data={filtered} />
         <PermitsByType data={filtered} />
         <TopBuildingTypes data={filtered} />

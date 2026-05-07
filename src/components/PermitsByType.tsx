@@ -14,12 +14,12 @@ interface Props {
 }
 
 export function PermitsByType({ data }: Props) {
-  const chartData = Object.entries(
-    data.reduce<Record<string, number>>((acc, d) => {
-      if (d.appl_type) acc[d.appl_type] = (acc[d.appl_type] || 0) + 1;
-      return acc;
-    }, {})
-  )
+    const chartData = Object.entries(
+        data.reduce<Record<string, number>>((acc, d) => {
+        if (d.appl_type) acc[d.appl_type] = (acc[d.appl_type] || 0) + 1;
+        return acc;
+        }, {})
+    )
     .map(([type, count]) => ({ type, count }))
     .sort((a, b) => b.count - a.count);
 
