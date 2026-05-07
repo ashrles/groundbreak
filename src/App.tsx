@@ -6,6 +6,7 @@ import { PermitsByYear } from "./components/PermitsByYear";
 import { PermitValueByMonth } from "./components/PermitValueByMonth";
 import { PermitsByType } from "./components/PermitsByType";
 import { TopBuildingTypes } from "./components/TopBuildingTypes";
+import { SummaryBar } from "./components/SummaryBar";
 
 function App() {
   const { data, loading, error } = usePermitData();
@@ -79,7 +80,11 @@ function App() {
         </button>
       </div>
     )}
-
+      <SummaryBar
+        data={filtered}
+        selectedYear={selectedYear}
+        selectedType={selectedType}
+      />
       {/* Stat Cards */}
       <div style={{
         display: "grid",
