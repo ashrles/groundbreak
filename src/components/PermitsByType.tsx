@@ -11,9 +11,10 @@ import type { Permit } from "../hooks/usePermitData";
 
 interface Props {
   data: Permit[];
+  onTypeClick: (type: string) => void;
 }
 
-export function PermitsByType({ data }: Props) {
+export function PermitsByType({ data, onTypeClick }: Props) {
     const chartData = Object.entries(
         data.reduce<Record<string, number>>((acc, d) => {
         if (d.appl_type) acc[d.appl_type] = (acc[d.appl_type] || 0) + 1;
@@ -22,6 +23,10 @@ export function PermitsByType({ data }: Props) {
     )
     .map(([type, count]) => ({ type, count }))
     .sort((a, b) => b.count - a.count);
+
+    const handleClick = (barData: any) => {
+    if (barData?.type) onTypeClick(barData.type);
+    };
 
   return (
     <div style={{
@@ -57,7 +62,7 @@ export function PermitsByType({ data }: Props) {
               "Permits",
             ] as any}
           />
-          <Bar dataKey="count" fill="#f0c040" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="count" fill="#f0c040" radius={[4, 4, 0, 0]} onClick={handleClick} style={{ cursor: "pointer" }} />
         </BarChart>
       </ResponsiveContainer>
     </div>

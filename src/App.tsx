@@ -10,6 +10,7 @@ import { TopBuildingTypes } from "./components/TopBuildingTypes";
 function App() {
   const { data, loading, error } = usePermitData();
   const [selectedYear, setSelectedYear] = useState<number | "all">("all");
+  const [selectedType, setSelectedType] = useState<string | "all">("all");
 
   const years = useMemo(() => {
     const unique = Array.from(new Set(data.map((d) => d.year))).filter(Boolean);
@@ -17,9 +18,11 @@ function App() {
   }, [data]);
 
   const filtered = useMemo(() => {
-    if (selectedYear === "all") return data;
-    return data.filter((d) => d.year === selectedYear);
-  }, [data, selectedYear]);
+    let result = data;
+    if (selectedYear !== "all") result = result.filter((d) => d.year === selectedYear);
+    if (selectedType !== "all") result = result.filter((d) => d.appl_type === selectedType);
+    return result;
+  }, [data, selectedYear, selectedType]);
 
   const stats = useMemo(() => {
     const totalPermits = filtered.length;
@@ -56,6 +59,26 @@ function App() {
       <div style={{ marginBottom: "32px" }}>
         <YearFilter years={years} selected={selectedYear} onChange={setSelectedYear} />
       </div>
+      {/* Type Filter */}
+      {selectedType !== "all" && (
+      <div style={{ marginBottom: "32px" }}>
+        <button
+          onClick={() => setSelectedType("all")}
+          style={{
+            padding: "6px 16px",
+            borderRadius: "6px",
+            border: "1px solid #2a2d3a",
+            background: "#f0c040",
+            color: "#0f1117",
+            cursor: "pointer",
+            fontWeight: "700",
+            fontSize: "14px",
+          }}
+        >
+          ✕ Clear type filter: {selectedType}
+        </button>
+      </div>
+    )}
 
       {/* Stat Cards */}
       <div style={{
@@ -73,7 +96,7 @@ function App() {
       <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
         <PermitsByYear data={filtered} onYearClick={(year) => setSelectedYear(year)} />
         <PermitValueByMonth data={filtered} />
-        <PermitsByType data={filtered} />
+        <PermitsByType data={filtered} onTypeClick={(type) => setSelectedType(type)} />
         <TopBuildingTypes data={filtered} />
       </div>
 
