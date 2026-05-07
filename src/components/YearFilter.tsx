@@ -18,11 +18,18 @@ export function YearFilter({ years, selected, onChange }: YearFilterProps) {
 
   return (
     <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-      <button style={buttonStyle(selected === "all")} onClick={() => onChange("all")}>
+      <button
+        style={buttonStyle(selected === "all")}
+        onClick={() => onChange("all")}
+      >
         All Years
       </button>
       {years.map((y) => (
-        <button key={y} style={buttonStyle(selected === y)} onClick={() => onChange(y)}>
+        <button
+          key={y}
+          style={buttonStyle(selected === y)}
+          onClick={() => onChange(y)}
+        >
           {y}
         </button>
       ))}

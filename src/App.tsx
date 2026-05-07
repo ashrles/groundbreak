@@ -20,8 +20,10 @@ function App() {
 
   const filtered = useMemo(() => {
     let result = data;
-    if (selectedYear !== "all") result = result.filter((d) => d.year === selectedYear);
-    if (selectedType !== "all") result = result.filter((d) => d.appl_type === selectedType);
+    if (selectedYear !== "all")
+      result = result.filter((d) => d.year === selectedYear);
+    if (selectedType !== "all")
+      result = result.filter((d) => d.appl_type === selectedType);
     return result;
   }, [data, selectedYear, selectedType]);
 
@@ -35,17 +37,23 @@ function App() {
       if (d.ward) acc[d.ward] = (acc[d.ward] || 0) + 1;
       return acc;
     }, {});
-    const topWard = Object.entries(wardCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "—";
+    const topWard =
+      Object.entries(wardCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "—";
 
     return { totalPermits, formattedValue, topWard };
   }, [filtered]);
 
-  if (loading) return <p style={{ padding: "40px", color: "#8b8fa8" }}>Loading permit data...</p>;
-  if (error) return <p style={{ padding: "40px", color: "red" }}>Error: {error}</p>;
+  if (loading)
+    return (
+      <p style={{ padding: "40px", color: "#8b8fa8" }}>
+        Loading permit data...
+      </p>
+    );
+  if (error)
+    return <p style={{ padding: "40px", color: "red" }}>Error: {error}</p>;
 
   return (
     <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 24px" }}>
-
       {/* Header */}
       <div style={{ marginBottom: "32px" }}>
         <h1 style={{ fontSize: "32px", marginBottom: "4px" }}>
@@ -58,53 +66,67 @@ function App() {
 
       {/* Year Filter */}
       <div style={{ marginBottom: "32px" }}>
-        <YearFilter years={years} selected={selectedYear} onChange={setSelectedYear} />
+        <YearFilter
+          years={years}
+          selected={selectedYear}
+          onChange={setSelectedYear}
+        />
       </div>
       {/* Type Filter */}
       {selectedType !== "all" && (
-      <div style={{ marginBottom: "32px" }}>
-        <button
-          onClick={() => setSelectedType("all")}
-          style={{
-            padding: "6px 16px",
-            borderRadius: "6px",
-            border: "1px solid #2a2d3a",
-            background: "#f0c040",
-            color: "#0f1117",
-            cursor: "pointer",
-            fontWeight: "700",
-            fontSize: "14px",
-          }}
-        >
-          ✕ Clear type filter: {selectedType}
-        </button>
-      </div>
-    )}
+        <div style={{ marginBottom: "32px" }}>
+          <button
+            onClick={() => setSelectedType("all")}
+            style={{
+              padding: "6px 16px",
+              borderRadius: "6px",
+              border: "1px solid #2a2d3a",
+              background: "#f0c040",
+              color: "#0f1117",
+              cursor: "pointer",
+              fontWeight: "700",
+              fontSize: "14px",
+            }}
+          >
+            ✕ Clear type filter: {selectedType}
+          </button>
+        </div>
+      )}
       <SummaryBar
         data={filtered}
         selectedYear={selectedYear}
         selectedType={selectedType}
       />
       {/* Stat Cards */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gap: "16px",
-        marginBottom: "40px",
-      }}>
-        <StatCard label="Total Permits" value={stats.totalPermits.toLocaleString()} />
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "16px",
+          marginBottom: "40px",
+        }}
+      >
+        <StatCard
+          label="Total Permits"
+          value={stats.totalPermits.toLocaleString()}
+        />
         <StatCard label="Total Permit Value" value={stats.formattedValue} />
         <StatCard label="Most Active Ward" value={stats.topWard} />
       </div>
 
       {/* Charts */}
       <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-        <PermitsByYear data={filtered} onYearClick={(year) => setSelectedYear(year)} />
+        <PermitsByYear
+          data={filtered}
+          onYearClick={(year) => setSelectedYear(year)}
+        />
         <PermitValueByMonth data={filtered} />
-        <PermitsByType data={filtered} onTypeClick={(type) => setSelectedType(type)} />
+        <PermitsByType
+          data={filtered}
+          onTypeClick={(type) => setSelectedType(type)}
+        />
         <TopBuildingTypes data={filtered} />
       </div>
-
     </div>
   );
 }
